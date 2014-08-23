@@ -1,0 +1,7 @@
+#ignore pycharm project files
+.idea/
+ProgrammingAssignment2/
+ProgrammingAssignment3/
+specdata/
+.Rhistory
+hw1_data.csv
