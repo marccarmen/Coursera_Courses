@@ -1,2 +1,5 @@
 .Rhistory
 data/
+output/
+.RData
+*.html
