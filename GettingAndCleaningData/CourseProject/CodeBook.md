@@ -1,7 +1,3 @@
----
-output:
-  html_document: default
----
 #<a name="top"/>Table of Contents
 
 1. [Introduction](#introduction) 
