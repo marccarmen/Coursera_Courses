@@ -26,6 +26,12 @@
 # 
 # Good luck!
 
+#See if the system has the plyr package and if not then install it
+if("plyr" %in% rownames(installed.packages()) == FALSE) {install.packages("plyr")}
+
+#load the plyr library
+library(plyr)
+
 #setup the paths and urls
 url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
 #basePath <- "C:/Users/Marc/Sync/Personal Projects/Coursera/GettingAndCleaningData/CourseProject"
@@ -84,45 +90,45 @@ for (i in 1:nrow(features))
     #Standardize Gyro with capital G
     featureName = gsub("gyro","Gyro",featureName)
     
-    #simply regex by replacing parens
-    featureName = gsub("\\(\\)","",featureName)
     #Still use STD for Standard Deviation but prettify it
-    featureName = gsub("-std","STD",featureName)
+    featureName = gsub("-std\\(\\)","STD()",featureName)
     #prettify Mean
-    featureName = gsub("-mean","Mean",featureName)
+    featureName = gsub("-mean\\(\\)","Mean()",featureName)
+    #simply regex by replacing parens
+    #featureName = gsub("\\(\\)","",featureName)
     #Still use MAD for Median Absolute Deviation but prettify it
-    featureName = gsub("-mad","MAD",featureName)
+    featureName = gsub("-mad\\(\\)","MAD",featureName)
     #Prettify max
-    featureName = gsub("-max","MAX",featureName)
+    featureName = gsub("-max\\(\\)","MAX",featureName)
     #Prettify min
-    featureName = gsub("-min","MIN",featureName)
+    featureName = gsub("-min\\(\\)","MIN",featureName)
     #Still use SMA for Signal magnitude area but prettify it
-    featureName = gsub("-sma","SMA",featureName)
+    featureName = gsub("-sma\\(\\)","SMA",featureName)
     #Change energy to EnergyMeasure
-    featureName = gsub("-energy","EnergyMeasure",featureName)
+    featureName = gsub("-energy\\(\\)","EnergyMeasure",featureName)
+    #Prettify meanFreq: Weighted average of the frequency components to obtain a mean frequency
+    featureName = gsub("-meanFreq\\(\\)","WeightedAverageFrequency",featureName)
     #Still use IQR for Interquartil Range but prettify it
-    featureName = gsub("-iqr","IQR",featureName)
+    featureName = gsub("-iqr\\(\\)","IQR",featureName)
     #Prettify entropy
-    featureName = gsub("-entropy","Entropy",featureName)
+    featureName = gsub("-entropy\\(\\)","Entropy",featureName)
     #Prettify arCoeff
-    featureName = gsub("-arCoeff","AutoregressionCoefficients",featureName)
+    featureName = gsub("-arCoeff\\(\\)","AutoregressionCoefficients",featureName)
     #Prettify arCoeff
-    featureName = gsub("-correlation","CorrelationCoefficient",featureName)
+    featureName = gsub("-correlation\\(\\)","CorrelationCoefficient",featureName)
     #Prettify maxInds: index of the frequency component with largest magnitude
     featureName = gsub("-maxInds","IndexFrequencyLargestMagnitude",featureName)
-    #Prettify meanFreq: Weighted average of the frequency components to obtain a mean frequency
-    featureName = gsub("-meanFreq","MeanFrequency",featureName)
     #skewness: skewness of the frequency domain signal 
-    featureName = gsub("-skewness","Skewness",featureName)
+    featureName = gsub("-skewness\\(\\)","Skewness",featureName)
     #kurtosis: kurtosis of the frequency domain signal 
-    featureName = gsub("-kurtosis","Kurtosis",featureName)
+    featureName = gsub("-kurtosis\\(\\)","Kurtosis",featureName)
     #bandsEnergy: Energy of a frequency interval within the 64 bins of the FFT of each window.
-    featureName = gsub("-bandsEnergy","BandsEnergy",featureName)
+    featureName = gsub("-bandsEnergy\\(\\)","BandsEnergy",featureName)
     
     #angle: Angle between to vectors.
-    featureName = gsub("angle\\(","AngleBetween",featureName)
-    #Remove extra parens
-    featureName = gsub(")","",featureName)
+    featureName = gsub("angle\\(t","AngleBetween(Time",featureName)
+    #angle: Angle between to vectors.
+    featureName = gsub("angle","AngleBetween",featureName)
     
     #set the cell value to the prettified name
     features[i,2] = featureName
@@ -137,8 +143,9 @@ colnames(testSubjects) <- c("Subject")
 #read the labels and assign the column name
 testLabels <- read.table(testYPath, header=FALSE)
 colnames(testLabels) <- c("ActivityID")
-#use merge to correctly assign the label name to the appropriate label id
-testLabels <- merge(testLabels, labels, by="ActivityID")
+#use plyr.join to correctly assign the label name to the appropriate label id
+#can't use merge as it either sorts or returns a random order
+testLabels <- join(testLabels, labels, by="ActivityID")
 #read in the test data
 testData <- read.table(testXPath, header=FALSE)
 
@@ -149,8 +156,9 @@ colnames(trainSubjects) <- c("Subject")
 #read the labels in and assign the column name
 trainLabels <- read.table(trainYPath, header=FALSE)
 colnames(trainLabels) <- c("ActivityID")
-#use merge to correctly assign the label name to the appropriate label id
-trainLabels <- merge(trainLabels, labels, by="ActivityID")
+#use plyr.join to correctly assign the label name to the appropriate label id
+#can't use merge as it either sorts or returns a random order
+trainLabels <- join(trainLabels, labels, by="ActivityID")
 #read in the training data
 trainData <- read.table(trainXPath, header=FALSE)
 
@@ -168,15 +176,16 @@ colnames(allData)[4:ncol(allData)] <- as.character(features[,"ColumnName"])
 
 #create a final data set that will contain the first three columns, mean(), and std() columns
 finalData <- allData[,1:3]
-finalData <- cbind(finalData, allData[,grepl("Mean", names(allData))])
-finalData <- cbind(finalData, allData[,grepl("STD", names(allData))])
+finalData <- cbind(finalData, allData[,grepl("Mean\\(\\)", names(allData))])
+finalData <- cbind(finalData, allData[,grepl("STD\\(\\)", names(allData))])
 
 #create a tidy data set by aggregating the data by ActivityID and SubjectID 
 tidyData <- aggregate(finalData[4:ncol(finalData)], by=list(ActivityID=finalData$ActivityID,SubjectID = finalData$SubjectID), mean)
 #sort data by activity id and subject id
 tidyData <- tidyData[order(tidyData$ActivityID, tidyData$SubjectID),]
 #merge the Activity feature names back in to the data set
-tidyData <- merge(labels, tidyData, by="ActivityID")
+#can't use merge as it either sorts or erturns a random order
+tidyData <- join(labels, tidyData, by="ActivityID")
 #set the column names
 colnames(tidyData)[1:3] <- c("ActivityID", "Activity", "Subject")
 colnames(tidyData)[4:ncol(finalData)] <- colnames(finalData)[4:ncol(finalData)]
@@ -214,4 +223,4 @@ lapply(colnames(tidyData)[3:ncol(tidyData)], write, tinyDataFeaturesPath, append
 lapply(unusedFeatures, write, unusedTinyDataFeaturesPath, append=TRUE)
 
 #Copy the final output to the main directory
-file.copy(tidyDataPath, "tidyData.txt")
+file.copy(tidyDataPath, "tidyData.txt",overwrite=T)
