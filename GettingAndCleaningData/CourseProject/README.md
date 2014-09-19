@@ -24,6 +24,7 @@ A basic summary of the what the code does is below.
 
 ##Output
 All resulting files will be written to the output directory.  There are 5 files that are written out.
+
 1. allDataFeatures.txt - A list of all features in the data set with cleaned up names.
 2. finalData.txt - The merged data set with all features.
 3. tidyData.txt - The aggregate data set as a 181x68 matrix
