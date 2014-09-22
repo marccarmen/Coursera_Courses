@@ -12,6 +12,7 @@ There is only one library required for this code.  I found that the `merge` func
 
 ##Code Summary
 A basic summary of the what the code does is below.
+
 1. Create `data` and `output` directories if necessary
 2. Download the data from https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip and store the file in the `data` directory if necessary
 3. Unzip the data if necessary
