@@ -105,7 +105,7 @@ The original data set has relatively short and informational names for each of t
 [Back to Top](#top)
 
 #<a name="codebook"/>CodeBook
-In the original data set there are 561 features.  The tidy data set contains 86 of the 561 features.  See the [Features Table](#featuresTable) to see a breakdown of the features that are included in the final data set.  
+In the original data set there are 561 features.  The tidy data set contains 66 of the 561 features.  See the [Features Table](#featuresTable) to see a breakdown of the features that are included in the final data set.  
 
 The description of the data and attributes is best taken straight from the [UCI Machine Learning Repository](http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones) entry for this data set.  I have included it below in [Data Set Information](#dataSetInfo) and [Attribute Information](#attributeInfo)
 
