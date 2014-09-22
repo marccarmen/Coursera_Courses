@@ -23,7 +23,7 @@ The goal of this project is to demonstrate my ability to collect, clean, and sum
 [Back to Top](#top)
 
 ##<a name="projDetails"/>Project Details
-The recent news regarding smart watches demonstrates the popularity of wearable computing devices.  Currently there are a variety of devices on the market tjat are designed for professional athletes as well as the average end-user.  Smart watches is the next step in this evolution appealing to not only those that are tracking information about their daily habits and their health but also the individual in business that has a stylish watch that tracks a great deal of information.  
+The recent news regarding smart watches demonstrates the popularity of wearable computing devices.  Currently there are a variety of devices on the market that are designed for professional athletes as well as the average end-user.  Smart watches is the next step in this evolution appealing to not only those that are tracking information about their daily habits and their health but also the individual in business that has a stylish watch that tracks a great deal of information.  
 
 Details regarding the data set are available from http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones
 
