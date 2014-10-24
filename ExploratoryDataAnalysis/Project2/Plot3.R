@@ -2,7 +2,6 @@
 # variable, which of these four sources have seen decreases in emissions from 1999–2008 
 # for Baltimore City? Which have seen increases in emissions from 1999–2008? Use the 
 # ggplot2 plotting system to make a plot answer this question.
-library(plyr)
 library(ggplot2)
 
 #setup the paths and urls
@@ -22,19 +21,25 @@ if (!file.exists(filePath)) {
     unzip(filePath, exdir='data')
 }
 
+#setup paths for the two data files
 emissionsPath <- "data/summarySCC_PM25.rds"
 classificationPath <- "data/Source_Classification_Code.rds"
 
+#read in emissions data
 NEI <- readRDS(emissionsPath)
 
+#subset the data for Balitmore City
 NEIBaltimore <- NEI[which(NEI$fips=="24510"),]
+#get a summary of emissions by year using Baltimore subset
 summary <- ddply(NEIBaltimore, .(type, year), numcolwise(sum))
+
+#save plot to file
 png("Plot3.png", width=480, height=480)
 graph <- ggplot(summary, aes(x=year, y=Emissions, colour=type)) +
     geom_smooth(alpha=.2, size=1, method="loess") +
     ggtitle("Total Emissions by Type in Baltimore City") +
     labs(colour = "Type") +
     xlab("Year") +
-    ylab("Emissions  (Tons of PM2.5)")
+    ylab("PM2.5 Emissions (tons)")
 print (graph)
 dev.off()

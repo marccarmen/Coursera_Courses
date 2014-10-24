@@ -18,14 +18,19 @@ if (!file.exists(filePath)) {
     unzip(filePath, exdir='data')
 }
 
+#setup paths for the two data files
 emissionsPath <- "data/summarySCC_PM25.rds"
 classificationPath <- "data/Source_Classification_Code.rds"
 
+#read in emissions data
 NEI <- readRDS(emissionsPath)
 
+#get a summary of emissions by year
 summary <- ddply(NEI, .(year), numcolwise(sum))
+
+#save plot to file
 png("Plot1.png", width=480, height=480)
 plot(summary$year, summary$Emissions, type="b", 
-     main="Total US Emissions", xlab="Year", ylab="Total Emissions (Tons of PM2.5)"
+     main="Total US Emissions", xlab="Year", ylab="Total PM2.5 Emissions (tons)"
      )
 dev.off()
