@@ -1,5 +1,6 @@
 # GitHub URL: https://github.com/marccarmen/Coursera_Courses/blob/master/ExploratoryDataAnalysis/Project2/Plot5.R
 # How have emissions from motor vehicle sources changed from 1999-2008 in Baltimore City?
+library(plyr)
 
 #setup the paths and urls
 url <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip"

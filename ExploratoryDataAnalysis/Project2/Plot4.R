@@ -1,6 +1,7 @@
 # GitHub URL: https://github.com/marccarmen/Coursera_Courses/blob/master/ExploratoryDataAnalysis/Project2/Plot4.R
 # Across the United States, how have emissions from coal combustion-related 
 # sources changed from 1999-2008?
+library(plyr)
 
 #setup the paths and urls
 url <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip"
